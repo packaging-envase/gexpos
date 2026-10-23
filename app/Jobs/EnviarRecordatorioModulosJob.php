@@ -83,7 +83,7 @@ class EnviarRecordatorioModulosJob implements ShouldQueue
                             expositores </div>
                     </div>
                 </body>
-                </html>'; 
+                </html>';
 
 
             $exposicion = Exposicion::find($expositor['id_exposicionº']);
