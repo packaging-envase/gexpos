@@ -1,0 +1,16 @@
+active_tv_pantallas
+active_alquiler_muebles
+active_compresores
+active_gruas
+active_plantas_arreglos
+active_internet_wifi
+active_seguridad
+active_lectores_opticos
+active_lector_qr
+active_promotoras
+active_seguros
+active_limpieza
+active_grafica
+active_catering
+active_dispensers_agua
+active_testing_servicio

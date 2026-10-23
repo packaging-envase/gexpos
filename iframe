@@ -1,0 +1,48 @@
+var iframe = document.getElementById('iframeCatalogo');
+var lastUrl = iframe.src; // Guardamos la URL inicial
+
+// Función para ajustar la altura del iframe
+function ajustarAlturaIframe() {
+// Comprobamos si tenemos acceso al contenido del iframe
+try {
+console.log(iframe.contentWindow.document.body.scrollHeight);
+iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+} catch (e) {
+console.warn("No se puede acceder al contenido del iframe: " + e);
+}
+}
+
+// Escuchar el mensaje del iframe
+window.addEventListener('message', function(event) {
+// Ajustar la altura del iframe con el valor enviado desde el iframe
+iframe.style.height = event.data + 'px';
+}, false);
+
+console.log('url iframe:',lastUrl);
+// Verificar si la URL ha cambiado cada 500 ms
+setInterval(function() {
+if (iframe.src !== lastUrl) {
+console.log('url iframe:',iframe.src);
+lastUrl = iframe.src; // Actualizar la última URL
+ajustarAlturaIframe(); // Ajustar altura
+}
+}, 500);
+
+// También ajustamos la altura cuando se carga inicialmente
+iframe.onload = ajustarAlturaIframe;
+
+
+
+// NEW
+
+// Escuchar el mensaje del iframe
+<script type="text/javascript">
+    var iframe = document.getElementById('iframeCatalogo');
+    window.addEventListener('message', function (event) {
+        // Ajustar la altura del iframe con el valor enviado desde el iframe
+        if (typeof event.data === 'number') {
+            console.log('event.data', event.data);
+            iframe.style.height = event.data + 'px';
+        }
+    }, false);
+</script>
