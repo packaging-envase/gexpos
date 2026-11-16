@@ -18,7 +18,7 @@
 
                 <a class="btn btn-primary float-end mx-2"
                     href="{{ route('congreso.generar-diplomas-view', ['idCongreso' => $viewData['congreso']['id']]) }}">
-                    Ver Diplomas
+                    Ver Certificados
                 </a>
             @endif
 

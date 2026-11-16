@@ -11,7 +11,7 @@
 
             <a class="btn btn-primary float-end mx-2"
                 href="{{ route('congreso.diploma-raw', ['idCongreso' => $idCongreso]) }}">
-                Configurar Diploma
+                Configurar Certificado
             </a>
 
             <a class="btn btn-primary float-end" style="text-decoration: none;"
@@ -20,7 +20,7 @@
             </a>
 
             <h2 class="mb-3">
-                <u>Congreso - Diplomas</u>
+                <u>Congreso - Certificados</u>
             </h2>
 
             <div class="mt-3">
