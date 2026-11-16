@@ -444,6 +444,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('congreso/diploma-font', function () {
             return response()->file(storage_path('app/fonts/GreatVibes-Regular.ttf'));
         })->name('diploma-font');
+        
         Route::get('congreso/diploma-raw-file/{idCongreso}', [CongresoController::class, 'diplomaRawFile'])->name('diploma-raw-file');
 
     });
