@@ -705,14 +705,12 @@ class CongresoController extends Controller
 
             if ($request->hasFile('csv')) {
                 $csvPath = $request->file('csv')->getRealPath();
-
                 if (($handle = fopen($csvPath, 'r')) !== false) {
                     while (($data = fgetcsv($handle, 0, ',')) !== false) {
-                        if (isset($data[0]) && trim($data[0]) !== '') {
-                            $nombres[] = trim($data[0]);
+                        if (isset($data[0], $data[1]) && trim($data[0]) !== '' && trim($data[1]) !== '') {
+                            $nombres[] = mb_convert_case(trim($data[1]), MB_CASE_TITLE, 'UTF-8') . ', ' . mb_convert_case(trim($data[0]), MB_CASE_TITLE, 'UTF-8');
                         }
                     }
-
                     fclose($handle);
                 }
             }
