@@ -113,9 +113,11 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-6 text-center">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
+                                    <b>
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Login') }}
+                                        </button>
+                                    </b>
                                 </div>
                             </div>
                             <!--
