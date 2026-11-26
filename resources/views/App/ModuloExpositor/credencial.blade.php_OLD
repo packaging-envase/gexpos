@@ -1,0 +1,129 @@
+<!doctype html>
+@extends('layouts.app')
+
+@section('content')
+    <?php
+    $credencialActive = !$viewData['credencial_vencimiento'] || $viewData['credencial_vencimiento']['value_date'] >= date('Y-m-d');
+    ?>
+    <script src="{{ asset('js\tinymce\tinymce\tinymce.min.js') }}"></script>
+
+    @include('App.ModuloExpositor.header', [
+        'title' => 'Solicitud de Credenciales',
+        'requerimientos' => false,
+    ])
+
+    <div class="container mt-3 expositor-modulo-invitaciones shadow-sm p-3 bg-white border mb-5"
+        style="min-height: calc(100vh - 55px);">
+        @include('layouts.messages')
+
+        <h4 class="text-center">
+            Ingerse la cantidad de credenciales requeridas<br />
+            <small>
+                (último día para actualizar la petición
+                <b>{{ $viewData['credencial_vencimiento'] ? date('d/m/Y', strtotime($viewData['credencial_vencimiento']['value_date'])) : '' }}</b>)
+            </small>
+        </h4>
+
+        @if ($credencialActive)
+            <form id="formExpositorCredencial" method="POST" action="{{ route('expositor.modulo.credencial.update-store') }}">
+        @endif
+        @csrf
+        <table class="table table-striped mx-auto border" style="max-width: 400px;">
+            <thead class="table-dark">
+                <th class="text-end">Tipo de Credencial</th>
+                <th>Cantidad</th>
+            </thead>
+            <tbody>
+                @foreach ($viewData['credencial_tipo_exposicion'] as $item)
+                    <tr>
+                        <td>
+                            <h5 class="text-end">{{ $item->credencialTipo['descripcion'] }}</h5>
+                        </td>
+                        <td>
+                            <input hidden name="id_credencial_tipo[]" value="{{ $item['id'] }}" />
+                            <input name="cantidad[]" value="{{ $item['cantidad'] ? $item['cantidad'] : 0 }}"
+                                class="form-control bg-white" style="max-width: 70px;"
+                                {{ !$credencialActive ? 'readonly=true' : '' }} />
+                        </td>
+                    </tr>
+                @endforeach
+                @if ($credencialActive)
+                    <tr>
+                        <td></td>
+                        <td><button class="btn btn-success float-end" type="submit">Guardar</button></td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        @if ($credencialActive)
+        <div class="d-flex bg-secondary py-2">
+            @foreach ($viewData['credencial_tipo_exposicion'] as $keyCredencial => $credencial)
+                <button id="buttonTableCredencial{{$keyCredencial}}" class="btn btn-primary ms-2 button-table-credencial" onclick="switchTableCredencial({{$keyCredencial}})">
+                    {{ $credencial->credencialTipo['descripcion'] }}
+                </button>
+            @endforeach
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Empresa</th>
+                    <th>Cargo</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            @foreach ($viewData['credencial_tipo_exposicion'] as $keyCredencial => $credencial)
+                <tbody id="tbodyCredenciales{{$keyCredencial}}" class="d-none">
+                    
+                </tbody>
+            @endforeach
+        </table>
+            </form>
+        @endif
+    </div>
+    <script>
+        let credenciales = @json($viewData['credencial_tipo_exposicion']);
+        
+        function switchTableCredencial(indexCredencial) {
+            $('.button-table-credencial').removeClass('btn-success');
+            $('.button-table-credencial').addClass('btn-primary');
+
+            $('#buttonTableCredencial'+indexCredencial).removeClass('btn-primary');
+            $('#buttonTableCredencial'+indexCredencial).addClass('btn-success');
+
+            $('*[id^="tbodyCredenciales"]').addClass('d-none');
+
+            let input = document.getElementsByName('cantidad[]');
+
+            for (let i = $('#tbodyCredenciales'+indexCredencial+' tr').length; i < input[indexCredencial].value; i++) {
+
+                $('#tbodyCredenciales'+indexCredencial).append(`
+                    <tr>
+                        <td>
+                            <input name="nombre${indexCredencial}[]" class="form-control bg-white" />
+                        </td>
+                        <td>
+                            <input name="apellido${indexCredencial}[]" class="form-control bg-white" />
+                        </td>
+                        <td>
+                            <input name="empresa${indexCredencial}[]" class="form-control bg-white" />
+                        </td>
+                        <td>
+                            <input name="cargo${indexCredencial}[]" class="form-control bg-white" />
+                        </td>
+                        <td>
+                            <input name="email${indexCredencial}[]" class="form-control bg-white" />
+                        </td>
+                        <td>
+                            <input name="telefono${indexCredencial}[]" class="form-control bg-white" />
+                        </td>
+                    </tr>
+                `);
+            }
+
+            $('#tbodyCredenciales'+indexCredencial).removeClass('d-none');
+        }
+    </script>
+@endsection
